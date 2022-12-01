@@ -1,0 +1,10 @@
+numpy
+matplotlib
+pandas
+scipy
+ipykernel
+jupyter
+earthengine-api
+geemap
+rasterio
+statsmodels
