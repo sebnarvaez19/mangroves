@@ -5,6 +5,7 @@ scipy
 ipykernel
 jupyter
 earthengine-api
+cartopy
 geemap
 rasterio
 statsmodels
