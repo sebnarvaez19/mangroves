@@ -7,7 +7,7 @@ from functions.gee_processing import *
 
 ee.Initialize()
 
-path = "C:/Users/srnar/source/mangroves/appendix/bad_images/{}.png"
+path = "./mangroves/appendix/bad_images/{}.png"
 
 lagoons = ["mallorquin", "totumo", "virgen"]
 
