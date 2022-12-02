@@ -21,25 +21,19 @@ forests = ee.FeatureCollection("projects/ee-sebnarvaez-mangroves/assets/forests"
 
 L5 = (
     ee.ImageCollection("LANDSAT/LT05/C02/T1_L2").map(image_scaler)
-                                                .map(cloud_mask)
                                                 .map(renamer7)
-                                                .map(calc_ndvi)
                                                 .filter(ee.Filter.calendarRange(1996, 1998, "year"))
 )
 
 L7 = (
     ee.ImageCollection("LANDSAT/LE07/C02/T1_L2").map(image_scaler)
-                                                .map(cloud_mask)
                                                 .map(renamer7)
-                                                .map(calc_ndvi)
                                                 .filter(ee.Filter.calendarRange(1999, 2013, "year"))
 )
 
 L8 = (
     ee.ImageCollection("LANDSAT/LC08/C02/T1_L2").map(image_scaler)
-                                                .map(cloud_mask)
                                                 .map(renamer8)
-                                                .map(calc_ndvi)
                                                 .filter(ee.Filter.calendarRange(2014, 2021, "year"))
 )
 
@@ -65,4 +59,3 @@ for lagoon in lagoons:
 
         plt.savefig(path.format(lb))
         plt.close()
-
