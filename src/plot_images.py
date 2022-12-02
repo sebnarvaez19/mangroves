@@ -56,10 +56,13 @@ for lagoon in lagoons:
     for date in dates:
         img = ICF.filter(ee.Filter.eq("DATE_ACQUIRED", date)).first()
 
+        fig = plt.figure()
+
         ax = cartoee.get_map(img, vis_params=vis, region=zooms[lagoon])
         lb = f"{lagoon} {date}"
 
         ax.set_title(lb, fontsize=12)
 
         plt.savefig(path.format(lb))
+        plt.close()
 
