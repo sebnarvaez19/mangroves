@@ -7,7 +7,7 @@ from functions.gee_processing import *
 
 ee.Initialize()
 
-path = "./mangroves/appendix/bad_images/{}.png"
+path = "./mangroves/appendix/all_images/{}.png"
 
 lagoons = ["mallorquin", "totumo", "virgen"]
 
@@ -48,7 +48,7 @@ for lagoon in lagoons:
     dates = ICF.reduceColumns(ee.Reducer.toList(), ["DATE_ACQUIRED"]).get("list").getInfo()
 
     for date in dates:
-        img = ICF.filter(ee.Filter.eq("DATE_ACQUIRED", date)).first()
+        img = ICF.filter(ee.Filter.eq("DATE_ACQUIRED", date)).mean()
 
         fig = plt.figure()
 
