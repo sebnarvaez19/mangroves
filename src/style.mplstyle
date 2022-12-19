@@ -1,0 +1,56 @@
+# Figure properties
+figure.figsize: 4, 4
+figure.autolayout: True
+figure.titlesize: small
+figure.titleweight: bold
+
+# Font properties
+font.size: 12
+
+# Axes properties
+axes.linewidth: 0.5
+axes.labelpad: 4
+axes.labelsize: x-small
+axes.titlesize: small
+
+# Grid properties
+axes.grid: False
+grid.color: "k"
+grid.linestyle: -
+grid.linewidth: 0.5
+
+# Tick properties
+xtick.top: True
+xtick.direction: in
+xtick.labelsize: x-small
+xtick.minor.visible: True
+# xtick.alignment: center
+
+ytick.right: True
+ytick.direction: in
+ytick.labelsize: x-small
+ytick.minor.visible: True
+# ytick.alignment: center
+
+xtick.major.size: 4
+xtick.major.width: 0.5
+xtick.minor.size: 2
+xtick.minor.width: 0.5
+
+ytick.major.size: 5
+ytick.major.width: 0.5
+ytick.minor.size: 3
+ytick.minor.width: 0.5
+
+# Images properties
+image.aspect: equal
+image.cmap: Spectral
+
+# Lines properties
+lines.linewidth: 2
+
+# Legend properties
+legend.framealpha: 1
+legend.frameon: False
+legend.fontsize: x-small
+legend.title_fontsize: x-small
