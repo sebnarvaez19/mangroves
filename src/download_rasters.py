@@ -21,7 +21,7 @@ for key in keys:
     l7 = L7.filterBounds(roi).map(landsat_scaler).map(landsat_cloud_mask).map(renamer7).map(calc_ndvi)
     l8 = L8.filterBounds(roi).map(landsat_scaler).map(landsat_cloud_mask).map(renamer8).map(calc_ndvi)
 
-    for i in range(1996, 2021):
+    for i in range(1996, 2022):
         for j in range(1, 13):
             if i < 1999:
                 img = (
