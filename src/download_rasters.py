@@ -47,9 +47,9 @@ for key in keys:
                       .set("date", f"01-{j:02d}-{i:04d}")
                 )
 
-            filename = f"data/raster/{key}/01-{j:02d}-{i:04d}.tif"
+            filename = f"data/raster/{key}/{i:04d}-{j:02d}-01.tif"
 
             print(f"{key}: image {j:02d}-{i:04d}")
             geemap.ee_export_image(
-                img, filename=filename, scale=30, region=roi
+                img, filename=filename, scale=30, region=roi, unmask_value=-3e5
             )
