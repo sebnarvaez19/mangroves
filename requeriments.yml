@@ -9,5 +9,6 @@ cartopy
 geopandas
 geemap
 rasterio
+xarray
 rasterstats
 statsmodels
