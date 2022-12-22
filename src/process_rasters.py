@@ -2,8 +2,6 @@ import os
 import numpy as np
 import xarray as xr
 import rioxarray
-import geopandas as gpd
-
 import rasterio
 
 path = "data/raster/{}/"
@@ -45,9 +43,6 @@ for lagoon in lagoons:
         dims=("latitude", "longitude", "time"),
         coords={"longitude": x, "latitude": y, "time": t},
         name="NDVI",
-        attrs={
-            "description": "NDVI obtained from LANDSAT images from 1996 to 2021 on GEE."
-        }
     )
 
     temp = xr.DataArray(
@@ -55,21 +50,12 @@ for lagoon in lagoons:
         dims=("latitude", "longitude", "time"),
         coords={"longitude": x, "latitude": y, "time": t},
         name="Surface Temperature",
-        attrs={
-            "description": "Surface Temperature from STBAND from LANDSAT images (1996 to 2021).",
-            "unit": "°C"
-        }
     )
 
-    gdf = gpd.read_file(path_shp)
+    data = xr.merge([ndvi, temp])
+    data = data.rio.write_crs(4326)
 
-    forest = gdf[gdf["key"] == lagoon].geometry
+    data.attrs["description"] = "NDVI and Surface Temperature extracted from LANDSAT SR images from 1996 to 2021"
+    data.attrs["surface_temperature_units"] = "°C"
 
-    ndvi = ndvi.rio.write_crs(4326)
-    temp = temp.rio.write_crs(4326)
-
-    ndvi = ndvi.rio.clip(forest, all_touched=False)
-    temp = ndvi.rio.clip(forest, all_touched=False)
-
-    ndvi.to_netcdf(save_path.format(lagoon, "ndvi.nc"))
-    temp.to_netcdf(save_path.format(lagoon, "temperature.nc"))
+    data.to_netcdf(save_path.format(lagoon, "ndvi_temperature.nc"))
