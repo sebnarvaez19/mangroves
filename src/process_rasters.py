@@ -1,10 +1,13 @@
 import os 
 import numpy as np
 import xarray as xr
+import rioxarray
+import geopandas as gpd
 
 import rasterio
 
 path = "data/raster/{}/"
+path_shp = "data/shapefile/mangrove_forests.shp"
 save_path = "data/processed/{}_{}"
 
 lagoons = ["mallorquin", "totumo", "virgen"]
@@ -57,6 +60,16 @@ for lagoon in lagoons:
             "unit": "°C"
         }
     )
+
+    gdf = gpd.read_file(path_shp)
+
+    forest = gdf[gdf["key"] == lagoon].geometry
+
+    ndvi = ndvi.rio.write_crs(4326)
+    temp = temp.rio.write_crs(4326)
+
+    ndvi = ndvi.rio.clip(forest, all_touched=False)
+    temp = ndvi.rio.clip(forest, all_touched=False)
 
     ndvi.to_netcdf(save_path.format(lagoon, "ndvi.nc"))
     temp.to_netcdf(save_path.format(lagoon, "temperature.nc"))
