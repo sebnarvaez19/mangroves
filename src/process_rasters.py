@@ -53,9 +53,11 @@ for lagoon in lagoons:
     )
 
     data = xr.merge([ndvi, temp])
-    data = data.rio.write_crs(4326)
+    data = data.transpose("time", "latitude", "longitude")
+    data = data.rio.write_crs("EPSG:4326")
+    data = data.rio.set_spatial_dims(x_dim="longitude", y_dim="latitude")
 
     data.attrs["description"] = "NDVI and Surface Temperature extracted from LANDSAT SR images from 1996 to 2021"
-    data.attrs["surface_temperature_units"] = "°C"
+    data.attrs["Surface Temperature units"] = "°C"
 
     data.to_netcdf(save_path.format(lagoon, "ndvi_temperature.nc"))
