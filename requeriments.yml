@@ -10,5 +10,6 @@ geopandas
 geemap
 rasterio
 xarray
+rioxarray
 rasterstats
 statsmodels
