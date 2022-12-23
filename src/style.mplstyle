@@ -47,7 +47,7 @@ image.aspect: equal
 image.cmap: Spectral
 
 # Lines properties
-lines.linewidth: 2
+lines.linewidth: 1
 
 # Legend properties
 legend.framealpha: 1
