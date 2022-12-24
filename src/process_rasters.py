@@ -33,10 +33,11 @@ for lagoon in lagoons:
 
     temp -= 273.15
 
-    mask = ((ndvi == -3e5) | (ndvi > 1.5) | (ndvi < -1.5))
-    
-    ndvi[mask] = np.nan
-    temp[mask] = np.nan
+    ndvi_mask = ((ndvi == -3e5) | (ndvi > 1.5) | (ndvi < -1.5))
+    temp_mask = (temp < 10.0)
+
+    ndvi[ndvi_mask] = np.nan
+    temp[temp_mask] = np.nan
 
     ndvi = xr.DataArray(
         data=ndvi,
