@@ -11,14 +11,6 @@ from matplotlib.dates import YearLocator
 # Load custom style
 plt.style.use("src/style.mplstyle")
 
-# Load discrete colors
-d_cmap = plt.cm.get_cmap("Set3", 3)
-colors = [d_cmap.colors[i,:] for i in range(3)]
-
-# Define labels for plots
-l_labs = [f"{c})" for c in "abc"]
-c_labs = [f"{c})" for c in "abcde"]
-
 # Define the titles of the variables
 titles = {
     "Precipitation": "Total Precipitation [mm]",
