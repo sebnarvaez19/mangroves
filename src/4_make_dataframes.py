@@ -96,6 +96,9 @@ for lagoon in lagoons:
         "Count": data["NDVI"].count(dim=["latitude", "longitude"]).to_series()
     }).resample("m").mean()
 
+    # Pass the first and second entries because they have NaN
+    df = df.iloc[2:,:]
+
     # Set the NaN values in pixel count to 0 and calculate the pixel percentage
     df.Count[df.Count.isna()] = 0
     df["PixelPercentage"] = df.Count/df.Count.max()*100
