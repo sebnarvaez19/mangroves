@@ -149,12 +149,11 @@ for lagoon in lagoons:
 
 
 # %% Show figures
-plt.show()
+# plt.show()
 
 # %% Save figures
 for i, (lagoon, figure) in enumerate(figs.items()):
     figure.savefig(save_images_path.format(i+1, lagoon, "svg"))
-    figure.savefig(save_images_path.format(i+1, lagoon, "png"))
 
 # %% Save detrended data
 # List to save the detrended dataframes
