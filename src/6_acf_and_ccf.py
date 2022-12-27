@@ -98,6 +98,7 @@ for lagoon in lagoons:
 
     for k in keys:
         x = data[k]
-        p = np.where(np.abs(x) == np.max(np.abs(x)))[0][0]
+        m = np.max(np.abs(x))
+        p = np.where(np.abs(x) == m)[0][0]
 
-        print(f"{lagoon.capitalize()}: {k} maximum correlation in lag={p}")
+        print(f"{lagoon.capitalize()}: {k} maximum correlation in lag={p} {m:0.3f}")
