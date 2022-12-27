@@ -3,11 +3,10 @@ import numpy as np
 import pandas as pd 
 
 from statsmodels.tsa.stattools import acf, ccf
+from functions.stat_utils import plot_acf_ccf
 
 # %% Imports for plots and define some paremeters
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
-from matplotlib.ticker import MultipleLocator
 
 # Load custom style
 plt.style.use("src/style.mplstyle")
@@ -20,200 +19,85 @@ titles = {
     "Temperature": "Mean Temperature [°C]"
 }
 
-t_labs = [c for c in "abc"]
-f_labs = [c for c in "abcd"]
+# Lagoons to subset data
+lagoons = ["mallorquin", "totumo", "virgen"]
 
 # %% Define paths
 data_path = "data/processed/detrended_hydrological_spectral_mean_data.csv"
-save_images_path_acf = "images/{}_{}_acf_plot.{}"
-save_images_path_ccf = "images/{}_{}_ccf_plot.{}"
+save_images_path = "images/{}_{}_{}cf_plot.{}"
+save_images_path = "images/{}_{}_{}cf_plot.{}"
 
 # %% Load data
 DATA = pd.read_csv(data_path, parse_dates=[1], index_col=0)
 
-# Subset data for plots
-mallorquin = DATA[DATA.Lagoon == "mallorquin"].copy()
-totumo = DATA[DATA.Lagoon == "totumo"].copy().drop("Discharge", axis=1)
-virgen = DATA[DATA.Lagoon == "virgen"].copy().drop("Discharge", axis=1)
+# %% Lists and dictionary to store date
+acf_figs = []                               # To save the acf plots
+ccf_figs = []                               # To save the ccf plots
+ccfs = {}                                   # To save the CCF data
 
-# %% Set the confidence interval
-N = mallorquin.shape[0]
-nlags = 24
-conf_interval = 1.96/np.sqrt(N)
-
-# %% Mallorquin
-# Get variables
-m_vars = mallorquin.columns[2:-3]
-h_vars = m_vars[:2]
-s_vars = m_vars[2:]
-
-# Calculate autocorrelation
-acf_mallorquin = {m_var: acf(mallorquin[m_var], nlags=nlags) for m_var in m_vars}
-
-# Calculate cross correlation
-ccf_mallorquin = {
-    f"{s_var} ~ {h_var}": ccf(mallorquin[s_var], mallorquin[h_var])[:nlags+1] \
-    for h_var in h_vars for s_var in s_vars
-}
-
-# Get the correlations titles
-tests = [c for c in ccf_mallorquin.keys()]
-
-# Plot autocorrelation
-fig, axs = plt.subplots(
-    nrows=2, ncols=2, sharex=True, sharey=True
-)
-
-# Define the index of the plots
-ix = [0, 0, 1, 1]
-jy = [0, 1, 0, 1]
-
-# For loop to plot the autocorrelation
-for i, j, m_var in zip(ix, jy, m_vars):
-    axs[i,j].stem(acf_mallorquin[m_var], markerfmt=" ", basefmt="black")
-    axs[i,j].axhline(conf_interval, color="black", linestyle="--")
-    axs[i,j].axhline(-conf_interval, color="black", linestyle="--")
-    axs[i,j].set_title(titles[m_var], fontsize=8)
-    axs[i,j].set_ylim([-1, 1])
-    
-    # Add ylabel to the axes on first column
-    if j == 0:
-        axs[i,j].set_ylabel("Correlation")
-
-    # Add xlabel to the axes in last row
-    if i == 1:
-        axs[i,j].set_xlabel("Lags [months]")
-        axs[i,j].xaxis.set_major_locator(MultipleLocator(4))
-        axs[i,j].xaxis.set_minor_locator(MultipleLocator(1))
-
-# Show plot
-# plt.show()
-
-# Save fig
-fig.savefig(save_images_path_acf.format(4, "mallorquin", "svg"))
-
-# Plot cross-correlation
-fig, axs = plt.subplots(
-    nrows=2, ncols=2, sharex=True, sharey=True
-)
-
-# For loop to plot cross-correlaion
-for i, j, test in zip(ix, jy, tests):
-    axs[i,j].stem(ccf_mallorquin[test], markerfmt=" ", basefmt="black")
-    axs[i,j].axhline(conf_interval, color="black", linestyle="--")
-    axs[i,j].axhline(-conf_interval, color="black", linestyle="--")
-    axs[i,j].set_title(test, fontsize=8)
-    axs[i,j].set_ylim([-0.7, 0.7])
-
-    # Add ylabel to the axes on first column
-    if j == 0:
-        axs[i,j].set_ylabel("Correlation")
-
-    # Add xlabel to the axes in last row
-    if i == 1:
-        axs[i,j].set_xlabel("Lags [months]")
-        axs[i,j].xaxis.set_major_locator(MultipleLocator(4))
-        axs[i,j].xaxis.set_minor_locator(MultipleLocator(1))
-
-# Show plot
-# plt.show()
-
-# Save fig
-fig.savefig(save_images_path_ccf.format(5, "mallorquin", "svg"))
-
-# %% Totumo and La Virgen
-# Because both dataframes has the same variables, the same coe is used to
-# plot them
-lagoons = ["totumo", "virgen"]
-datasets = {"totumo": totumo, "virgen": virgen}
-
-# Get variables
-t_vars = totumo.columns[2:-3]
-h_vars = t_vars[:1]
-s_vars = t_vars[1:]
-
-# Define the index of figure to save
-fig_index = 6
-
-# For loop throught lagoons to subset data
+# %% Plot the ACF and CCF of all variables by lagoon
+# For loop to plot and calculate ACF and CCF by lagoon
 for lagoon in lagoons:
-    dataset = datasets[lagoon]
-    # Calculate autocorrelation
-    acf_data = {t_var: acf(dataset[t_var], nlags=nlags) for t_var in t_vars}
+    # Subset data based on lagoon
+    subset = DATA[DATA.Lagoon == lagoon].copy()
+    
+    # Calculate some parameters for the plots
+    N = subset.shape[0]
+    nlags = 24
+    confi = 1.96/np.sqrt(N)
 
-    # Calculate cross correlation
-    ccf_data = {
-        f"{s_var} ~ {h_var}": ccf(dataset[s_var], dataset[h_var])[:nlags+1] \
-        for h_var in h_vars for s_var in s_vars
+    # Get the variables names
+    all_vars = subset.columns[2:-3]
+
+    # If lagoon is Totumo and La Virgen we have to remove discharge from
+    # the variables
+    if lagoon in ("totumo", "virgen"):
+        # Slice to remove discharge
+        all_vars = all_vars[[0, 2, 3]]
+        
+        i_vars = all_vars[[0, 2]]           # Get independant variables
+        d_vars = all_vars[[1]]              # Get dependant variables 
+    
+    else:
+        i_vars = all_vars[[0, 1, 3]]        # Get independant variables
+        d_vars = all_vars[[2]]              # Get dependant variables 
+
+    # Dictionary to save ACF data by variable
+    acf_data = {
+        var: acf(subset[var], nlags=nlags) \
+        for var in all_vars
     }
 
-    # Get the correlations titles
-    tests = [c for c in ccf_data.keys()]
+    # Dictionary to save CCF data by variable
+    ccf_data = {
+        f"{d} ~ {i}": ccf(subset[d], subset[i])[:nlags+1] \
+        for d in d_vars for i in i_vars
+    }
+    
+    # Also save the CCF data in another dictionary
+    ccfs[lagoon] = ccf_data
 
-    # Plot autocorrelation
-    fig = plt.figure()
-    grs = GridSpec(2, 2)
+    # Save the plots in their respective list
+    acf_figs.append(plot_acf_ccf(acf_data, confi, [-1.2, 1.2], titles))
+    ccf_figs.append(plot_acf_ccf(ccf_data, confi, [-0.7, 0.7]))
+    
+# %% Show figures
+# plt.show()
 
-    # Create axes
-    axs = [
-        fig.add_subplot(grs[0,0]),
-        fig.add_subplot(grs[1,:]),
-        fig.add_subplot(grs[0,1]),
-    ]
+# %% Save figures
+i = 4
+for lagoon, afig, cfig in zip(lagoons, acf_figs, ccf_figs):
+    afig.savefig(save_images_path.format(i, lagoon, "a", "svg"))
+    cfig.savefig(save_images_path.format(i+1, lagoon, "c", "svg"))
+    i += 2
 
-    # Share x and y axis of all axes
-    axs[0].get_shared_x_axes().join(*axs)
-    axs[0].get_shared_y_axes().join(*axs)
+# %% Show where is the maximum correlation by lagoon
+for lagoon in lagoons:
+    data = ccfs[lagoon]
+    keys = [t for t in data.keys()]
 
-    # For loop plot autocorrelation data
-    for i, (t_var, ax) in enumerate(zip(t_vars, axs)):
-        ax.stem(acf_data[t_var], markerfmt=" ", basefmt="black")
-        ax.axhline(conf_interval, color="black", linestyle="--")
-        ax.axhline(-conf_interval, color="black", linestyle="--")
-        ax.set_title(titles[t_var], fontsize=8)
-        ax.set_ylim([-1, 1])
+    for k in keys:
+        x = data[k]
+        p = np.where(np.abs(x) == np.max(np.abs(x)))[0][0]
 
-        ax.xaxis.set_major_locator(MultipleLocator(4))
-        ax.xaxis.set_minor_locator(MultipleLocator(1))
-
-        # Add ylabel to the axes on first column
-        if i < 2:
-            ax.set_ylabel("Correlation")
-
-        # Add xlabel to the axes in last row
-        if i == 1:
-            ax.set_xlabel("Lags [months]")
-
-    # Show plot
-    # plt.show()
-
-    # Save fig
-    fig.savefig(save_images_path_acf.format(fig_index, lagoon, "svg"))
-
-    # Plot cross-correlation
-    fig, axs = plt.subplots(
-        nrows=2, ncols=1, sharex=True, sharey=True
-    )
-
-    # For loop to plot cross-correlation data
-    for i, (test, ax) in enumerate(zip(tests, axs)):
-        ax.stem(ccf_data[test], markerfmt=" ", basefmt="black")
-        ax.axhline(conf_interval, color="black", linestyle="--")
-        ax.axhline(-conf_interval, color="black", linestyle="--")
-        ax.set_title(test, fontsize=8)
-        ax.set_ylim([-0.7, 0.7])
-
-        ax.set_ylabel("Correlation")
-
-        if i == 1:
-            ax.set_xlabel("Time [Y]")
-            ax.xaxis.set_major_locator(MultipleLocator(4))
-            ax.xaxis.set_minor_locator(MultipleLocator(1))
-
-    # Show plot
-    # plt.show()
-
-    # Save fig
-    fig.savefig(save_images_path_ccf.format(fig_index+1, lagoon, "svg"))
-
-    fig_index += 2
+        print(f"{lagoon.capitalize()}: {k} maximum correlation in lag={p}")
