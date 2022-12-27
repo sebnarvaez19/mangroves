@@ -78,7 +78,7 @@ for data in [DATA, DAT2, DAT3]:
         data=subset,
         variables=variables,
         half=True,
-        hide_insignificants=False,
+        hide_insignificants=True,
         show_labels=True,
         show_colorbar=False,
     )
