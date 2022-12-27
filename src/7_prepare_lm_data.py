@@ -24,6 +24,9 @@ save_images_path = "images/{}_corr_matrix_{}.{}"
 # %% Read data
 DATA = pd.read_csv(data_path, parse_dates=[1], index_col=0)
 
+# Calculate the moving average of five to reduce the noise on SOI
+DATA.SOI = DATA.SOI.rolling(window=5, min_periods=1, center=True).mean()
+
 # %% Roll variables based on CCFs plots
 # List to save the dataframes
 DAT2 = []
