@@ -352,3 +352,54 @@ def plot_acf_ccf(
     axs[0].get_shared_y_axes().join(*axs)
 
     return fig
+
+def plot_corr_matrix(data: pd.DataFrame, variables: npt.ArrayLike | None = None) -> Figure:
+    """
+    Function to plot corr matrix.
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        Dataframe with the variables to plot.
+
+    variables : ArrayLike | None = None
+        Variables of interest.
+
+    Returns
+    -------
+    fig : matplotlib.figure.Figure
+        Corr matrix plot.
+
+    """
+    # If variables isn't defined, get the columns of the dataframe
+    if variables == None:
+        variables = data.columns
+    
+    # Get the correlation matrix
+    corr = data[variables].corr()
+
+    # Create the figure and the axes
+    fig = plt.figure(figsize=(4, 3))
+    ax1 = plt.subplot(1, 1, 1)
+
+    # Plot matrix with pcolormesh
+    im1 = ax1.pcolormesh(
+        variables, variables, corr, cmap="Spectral", edgecolor="w", vmin=-1, vmax=1
+    )
+
+    # Add the colorbar
+    cax = ax1.inset_axes([1.04, 0.1, 0.05, 0.8])
+    bar = plt.colorbar(im1, cax=cax, label="Correlation")
+
+    x, y = np.meshgrid([0, 1, 2, 3], [0, 1, 2, 3])
+    x = x.reshape(-1)
+    y = y.reshape(-1)
+    t = corr.values.reshape(-1)
+
+    for xi, yi, ti in zip(x, y, t):
+        ax1.text(xi, yi, round(ti, 2), size=8, ha="center", va="center")
+
+    # Rotate labels to improve their readability
+    ax1.set_xticklabels(variables, rotation = 30)
+    
+    return fig
