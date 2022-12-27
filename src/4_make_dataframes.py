@@ -6,7 +6,7 @@ import geopandas as gpd
 import xarray
 import rioxarray
 
-from functions.na_seadec import na_seadec
+from functions.stat_utils import na_seadec
 
 # %% Define the time limits and the data paths
 t0 = np.datetime64("2001-01-01")
