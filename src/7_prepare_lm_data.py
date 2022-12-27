@@ -12,7 +12,7 @@ plt.style.use("src/style.mplstyle")
 
 # Keys to iterate
 lagoons = ["mallorquin", "totumo", "virgen"]
-variables = ["Precipitation", "Discharge", "NDVI", "Temperature"]
+variables = ["Precipitation", "Discharge", "Temperature", "NDVI"]
 save_keys = ["original", "rolled", "interpolated_removed"]
 
 # %% Define paths
@@ -70,8 +70,18 @@ figs = []
 
 # Iterate over the dataframes to plot the correlation matrix
 for data in [DATA, DAT2, DAT3]:
+    # Subset data for plot
+    subset = data[data.Lagoon == "mallorquin"].copy()
+    
     # Plot corr matrix
-    fig = plot_corr_matrix(data, variables)
+    fig = plot_corr_matrix(
+        data=subset,
+        variables=variables,
+        half=True,
+        hide_insignificants=False,
+        show_labels=True,
+        show_colorbar=False,
+    )
 
     # Store the figs
     figs.append(fig)
