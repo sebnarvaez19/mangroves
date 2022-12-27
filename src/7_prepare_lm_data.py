@@ -77,7 +77,7 @@ for data in [DATA, DAT2, DAT3]:
     figs.append(fig)
 
 # %% Show figure
-plt.show()
+# plt.show()
 
 # %% Save figures
 for i, (fig, key) in enumerate(zip(figs, save_keys)):
