@@ -116,8 +116,7 @@ print("\nGeneral model:", general_model.summary(), sep="\n")
 mallorquin = DATA[DATA.Lagoon == "mallorquin"].copy()
 
 # Formula
-f = "NDVI ~ Precipitation + Discharge + Temperature \
-    + SOI:Precipitation + SOI:Discharge"
+f = "NDVI ~ Precipitation + Discharge + Temperature + Precipitation:Discharge"
 
 # Run model
 mallorquin_model = smf.ols(f, mallorquin).fit()
