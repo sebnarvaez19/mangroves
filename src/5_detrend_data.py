@@ -64,15 +64,12 @@ for lagoon in lagoons:
     # Subset data by lagoon
     subset = DATA[DATA.Lagoon == lagoon].copy().set_index("Time", drop=True)    
     
-    # If the lagoon isn't Mallorquín, we don't need Discharge
+    # Detrend variables of interest from subset dataframe: If 
+    # the lagoon isn't Mallorquín, we don't need Discharge
     if lagoon == "mallorquin":
-        variables = ["Precipitation", "Discharge", "NDVI", "Temperature"]
-
+        subset = detrend_variables(subset, variables)
     else:
-        variables = ["Precipitation", "NDVI", "Temperature"]
-    
-    # Detrend variables of interest from subset dataframe
-    subset = detrend_variables(subset, variables)
+        subset = detrend_variables(subset, [variables[i] for i in [0, 2, 3]])
     
     # Save subset dataframe into the list
     DAT2.append(subset)
