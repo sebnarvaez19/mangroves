@@ -47,7 +47,7 @@ def na_seadec(
 
     Returns
     -------
-    anomalies : pd.Series
+    x : pd.Series
         Series interpolated.
     """
 
@@ -65,7 +65,10 @@ def na_seadec(
 
     # Sum the trend with the residuals to get the series without
     # seasonality
-    ts_no_seasonal = components.trend + components.resid
+    if model == "additive":
+        ts_no_seasonal = components.trend + components.resid
+    else:
+        ts_no_seasonal = components.trend / components.resid
 
     # Restor the NaN values
     ts_no_seasonal[mask] = np.nan
@@ -77,7 +80,10 @@ def na_seadec(
     x2 = x2.interpolate(method=method)
 
     # Add the seasonality to the interpolated data
-    x2 = x2 + components.seasonal
+    if model == "additive":
+        x2 = x2 + components.seasonal
+    else:
+        x2 = x2 / components.seasonal
 
     # Fill the NaN with the interpolated data
     x[mask] = x2[mask]
@@ -125,11 +131,11 @@ def detrend_variables(
 
 def corr_matrix(
     data: pd.DataFrame,
-    variables: npt.ArrayLike | None == None,
+    variables: npt.ArrayLike | None = None,
     half: bool = False,
     hide_insignificants: bool = False,
     singificant_threshold: float = 0.05,
-) -> npt.ArrayLike:
+) -> pd.DataFrame:
     """
     Calculate the pearson correlation matrix of the variables in a dataframe.
 
@@ -425,7 +431,7 @@ def plot_acf_ccf(
 
 def plot_corr_matrix(
     data: pd.DataFrame,
-    variables: npt.ArrayLike | None == None,
+    variables: npt.ArrayLike | None = None,
     half: bool = False,
     hide_insignificants: bool = False,
     singificant_threshold: float = 0.05,
