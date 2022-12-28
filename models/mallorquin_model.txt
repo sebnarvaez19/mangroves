@@ -1,0 +1,31 @@
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                   NDVI   R-squared:                       0.520
+Model:                            OLS   Adj. R-squared:                  0.507
+Method:                 Least Squares   F-statistic:                     38.41
+Date:                Tue, 27 Dec 2022   Prob (F-statistic):           1.39e-26
+Time:                        22:16:46   Log-Likelihood:                 264.85
+No. Observations:                 183   AIC:                            -517.7
+Df Residuals:                     177   BIC:                            -498.4
+Df Model:                           5                                         
+Covariance Type:            nonrobust                                         
+=====================================================================================
+                        coef    std err          t      P>|t|      [0.025      0.975]
+-------------------------------------------------------------------------------------
+Intercept             0.0022      0.004      0.508      0.612      -0.006       0.011
+Precipitation         0.0003   6.75e-05      4.593      0.000       0.000       0.000
+Discharge          1.842e-05   2.95e-06      6.238      0.000    1.26e-05    2.42e-05
+Temperature           0.0047      0.001      4.874      0.000       0.003       0.007
+SOI:Precipitation -7.826e-05    4.9e-05     -1.597      0.112      -0.000    1.85e-05
+SOI:Discharge     -1.244e-06   2.28e-06     -0.546      0.586   -5.74e-06    3.26e-06
+==============================================================================
+Omnibus:                       18.641   Durbin-Watson:                   1.816
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               37.725
+Skew:                          -0.468   Prob(JB):                     6.43e-09
+Kurtosis:                       5.017   Cond. No.                     3.10e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 3.1e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.

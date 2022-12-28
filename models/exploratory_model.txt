@@ -1,0 +1,40 @@
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                   NDVI   R-squared:                       0.378
+Model:                            OLS   Adj. R-squared:                  0.363
+Method:                 Least Squares   F-statistic:                     24.30
+Date:                Tue, 27 Dec 2022   Prob (F-statistic):           4.38e-49
+Time:                        22:16:46   Log-Likelihood:                 757.97
+No. Observations:                 574   AIC:                            -1486.
+Df Residuals:                     559   BIC:                            -1421.
+Df Model:                          14                                         
+Covariance Type:            nonrobust                                         
+==================================================================================================
+                                     coef    std err          t      P>|t|      [0.025      0.975]
+--------------------------------------------------------------------------------------------------
+Intercept                          0.0005      0.005      0.098      0.922      -0.009       0.010
+Lagoon[T.totumo]                  -0.0022      0.007     -0.310      0.757      -0.016       0.012
+Lagoon[T.virgen]                  -0.0004      0.007     -0.064      0.949      -0.014       0.013
+Precipitation                      0.0006   5.29e-05     11.377      0.000       0.000       0.001
+Lagoon[T.totumo]:Precipitation  5.022e-07    7.4e-05      0.007      0.995      -0.000       0.000
+Lagoon[T.virgen]:Precipitation  1.139e-05   6.92e-05      0.165      0.869      -0.000       0.000
+Temperature                        0.0048      0.001      4.333      0.000       0.003       0.007
+Lagoon[T.totumo]:Temperature      -0.0018      0.002     -1.192      0.234      -0.005       0.001
+Lagoon[T.virgen]:Temperature      -0.0025      0.002     -1.578      0.115      -0.006       0.001
+SOI                                0.0028      0.004      0.698      0.485      -0.005       0.011
+Lagoon[T.totumo]:SOI              -0.0040      0.006     -0.706      0.481      -0.015       0.007
+Lagoon[T.virgen]:SOI              -0.0031      0.006     -0.554      0.580      -0.014       0.008
+Precipitation:Temperature       8.616e-06    7.1e-06      1.213      0.226   -5.33e-06    2.26e-05
+Precipitation:SOI                 -0.0001   2.19e-05     -5.707      0.000      -0.000    -8.2e-05
+Temperature:SOI                   -0.0011      0.001     -1.858      0.064      -0.002    6.37e-05
+==============================================================================
+Omnibus:                       30.852   Durbin-Watson:                   1.594
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               42.302
+Skew:                          -0.455   Prob(JB):                     6.52e-10
+Kurtosis:                       3.969   Cond. No.                     1.42e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 1.42e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
