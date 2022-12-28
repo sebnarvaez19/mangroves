@@ -4,7 +4,7 @@ Dep. Variable:                   NDVI   R-squared:                       0.378
 Model:                            OLS   Adj. R-squared:                  0.363
 Method:                 Least Squares   F-statistic:                     24.30
 Date:                Tue, 27 Dec 2022   Prob (F-statistic):           4.38e-49
-Time:                        22:16:46   Log-Likelihood:                 757.97
+Time:                        22:24:31   Log-Likelihood:                 757.97
 No. Observations:                 574   AIC:                            -1486.
 Df Residuals:                     559   BIC:                            -1421.
 Df Model:                          14                                         
