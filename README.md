@@ -2,7 +2,7 @@
 
 This is the official repository of Spatial and temporal trends of NDVI in Mangrove Forests coastal lagoons in the Colombian Caribbean where could be found all the processing performed.
 
-In this repository we analyze the relationship of the mean NDVI (taken from Landsat 5, 7 and 8 images) with total monthly precipitation, mean river dicharge (taken from near gauge stations) and surface temperature (also taken from landsat images) in the mangrove forests associated with Mallorquín, Totumo and La Virgen coastal lagoons (Colombian Caribbean Region). To perform we use time series decomposition to explore the data, autocorrelation and cross-correlation of the variables to see how the affect NDVI and a linear regression model to compare the effect of Precipitaiton, Discharge and Temperature on NDVI and try to predict it.
+In this repository we analyze the relationship of the mean NDVI (taken from Landsat 5, 7 and 8 images) with total monthly precipitation, mean river dicharge (taken from near gauge stations) and surface temperature (also taken from landsat images) in the mangrove forests associated with Mallorquín, Totumo and La Virgen coastal lagoons (Colombian Caribbean Region). To do this we use time series decomposition to explore the data, autocorrelation and cross-correlation of the variables to see how the affect NDVI and a linear regression model to compare the effect of Precipitaiton, Discharge and Temperature on NDVI and try to predict it.
 
 ## Folder Structure
 ```bash
