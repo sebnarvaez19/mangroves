@@ -43,7 +43,7 @@ for lagoon in lagoons:
     subset.Precipitation = np.roll(subset.Precipitation, shift_p)
     subset.Discharge = np.roll(subset.Discharge, shift_q)
 
-    # Remove the last columns due to their values don't have sense
+    # Remove the last rows due to their values don't have sense
     subset = subset.iloc[shift_p:]
 
     # Store the subsets dataframes
